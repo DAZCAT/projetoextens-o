@@ -6,6 +6,7 @@ import PaginaSabores from './components/PaginaSabores';
 import PaginaDados from './components/PaginaDados';
 
 const Stack = createNativeStackNavigator();
+const logo = require('./assets/logo.png');
 
 export default function App() {
   return (
