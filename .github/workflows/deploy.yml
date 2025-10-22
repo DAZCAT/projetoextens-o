@@ -1,0 +1,50 @@
+name: Deploy Expo Web to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Instala dependências na RAIZ do repo
+      - name: Install deps
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      # Exporta build web (gera dist/)
+      - name: Build Expo Web
+        run: npx expo export --platform web
+
+      # Ajusta base path para GitHub Pages (/Projeto-de-extens-o/)
+      - name: Patch base path for GitHub Pages
+        run: |
+          sed -i 's|href="/|href="/Projeto-de-extens-o/|g' dist/index.html || true
+          sed -i 's|src="/|src="/Projeto-de-extens-o/|g'  dist/index.html || true
+          sed -i 's|<head>|<head><base href="/Projeto-de-extens-o/">|g' dist/index.html || true
+
+      # SPA fallback (evita 404 em rotas)
+      - name: Copy 404.html for SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      # Publica dist/ na branch gh-pages
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          publish_dir: dist
