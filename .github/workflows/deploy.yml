@@ -34,10 +34,16 @@ jobs:
       # Ajusta base path para GitHub Pages (/Projeto-de-extens-o/)
       - name: Patch base path for GitHub Pages
         run: |
+<<<<<<< HEAD
               sed -i 's|href="/|href="/projetoextens-o/|g' dist/index.html || true
               sed -i 's|src="/|src="/projetoextens-o/|g'  dist/index.html || true
               sed -i 's|<head>|<head><base href="/projetoextens-o/">|g' dist/index.html || true
 
+=======
+          sed -i 's|href="/|href="/projetoextens-o/|g' dist/index.html || true
+          sed -i 's|src="/|src="/projetoextens-o/|g'  dist/index.html || true
+          sed -i 's|<head>|<head><base href="/projetoextens-o/">|g' dist/index.html || true
+>>>>>>> d5d2dd9fcdf4094476255b6cd18c114a8a00270b
 
       # SPA fallback (evita 404 em rotas)
       - name: Copy 404.html for SPA fallback
