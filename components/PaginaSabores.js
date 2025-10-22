@@ -12,7 +12,31 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 
+// 👇 caminho relativo a partir de components/
 const logo = require('../assets/logo.png');
+
+export default function PaginaSabores({ navigation }) {
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.pageContainer}>
+        <View style={styles.logoTop}>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
+        </View>
+
+        <Text style={styles.pageTitle}>Joana Salgados</Text>
+
+        {/* ... resto da sua tela ... */}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  pageContainer: { padding: 16, paddingBottom: 40, backgroundColor: '#fff' },
+  logoTop: { alignItems: 'center', marginBottom: 12 },
+  logo: { width: 180, height: 180, borderRadius: 20 },
+  pageTitle: { fontSize: 22, fontWeight: '700', textAlign: 'center' },
+});
 
 const SABORES_INICIAIS = [
   { id: 'Queijo', tipo: 'fritos' },
