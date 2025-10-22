@@ -32,28 +32,28 @@ jobs:
       # Ajuste do base path para o nome EXATO do repositório: Projetoextens-o
       - name: Patch base path for GitHub Pages
         run: |
-            sed -i 's|href="/|href="/projetoextens-o/|g' dist/index.html || true
-            sed -i 's|src="/|src="/projetoextens-o/|g'  dist/index.html || true
-            sed -i 's|<head>|<head><base href="/projetoextens-o/">|g' dist/index.html || true
+            sed -i 's|href="/|href="/projetoextens-o/|g' web-build/index.html || true
+            sed -i 's|src="/|src="/projetoextens-o/|g'  web-build/index.html || true
+            sed -i 's|<head>|<head><base href="/projetoextens-o/">|g' web-build/index.html || true
 
-            find dist -type f -name "*.js" -print0 | xargs -0 sed -i \
+            find web-build -type f -name "*.js" -print0 | xargs -0 sed -i \
             -e 's|"/_expo/|"/projetoextens-o/_expo/|g' \
             -e 's|"/assets/|"/projetoextens-o/assets/|g'
 
-            if [ -f dist/metadata.json ]; then
-            sed -i 's|"/assets/|"/projetoextens-o/assets/|g' dist/metadata.json || true
+            if [ -f web-build/metadata.json ]; then
+            sed -i 's|"/assets/|"/projetoextens-o/assets/|g' web-build/metadata.json || true
             fi
 
-            find dist -type f -name "*.css" -print0 | xargs -0 sed -i \
+            find web-build -type f -name "*.css" -print0 | xargs -0 sed -i \
             -e "s|url('/assets/|url('/projetoextens-o/assets/|g" \
             -e 's|url("/assets/|url("/projetoextens-o/assets/|g'
 
       # SPA fallback (evita 404 em navegação client-side)
       - name: Copy 404.html for SPA fallback
-        run: cp dist/index.html dist/404.html
+        run: cp web-build/index.html web-build/404.html
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
-          publish_dir: dist
+          publish_dir: web-build
